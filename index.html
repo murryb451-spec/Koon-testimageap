@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Koon Sets Out To Explore</title>
+    <!-- Telegram Web Apps API Script -->
+    <script src="https://telegram.org"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <h1 class="main-title">Koon Sets Out To Explore</h1>
+
+        <!-- Character Banner -->
+        <div class="image-wrapper">
+            <!-- Replace with your hosted image URL -->
+            <img src="https://your-hosting-domain.com" alt="Koon the Raccoon" class="hero-image">
+        </div>
+
+        <!-- How To Play Button -->
+        <div class="center-btn-container">
+            <button class="btn btn-green btn-how-to" onclick="onAction('How to Play')">How To Play ?</button>
+        </div>
+
+        <!-- 2x2 Action Grid -->
+        <div class="grid-container">
+            <button class="btn btn-purple" onclick="onAction('City Dumpster')">City Dumpster</button>
+            <button class="btn btn-purple" onclick="onAction('Lake Cabin')">Lake Cabin</button>
+            <button class="btn btn-purple" onclick="onAction('Mountain Cave')">Mountain Cave</button>
+            <button class="btn btn-purple" onclick="onAction('Abandoned Well')">Abandoned Well</button>
+        </div>
+
+        <!-- Bottom Action Button -->
+        <div class="center-btn-container bottom-container">
+            <button class="btn btn-green btn-backpack" onclick="onAction('My Backpack')">My Backpack</button>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Telegram WebApp API
+        const tg = window.Telegram.WebApp;
+        tg.expand(); // Expands the webview to full height
+
+        function onAction(actionName) {
+            // Optional: Send data back to your python bot backend
+            tg.sendData(JSON.stringify({ action: actionName }));
+            alert("Exploring: " + actionName);
+        }
+    </script>
+</body>
+</html>
