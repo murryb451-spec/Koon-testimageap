@@ -20,7 +20,7 @@ body {
     
     /* 🐾 ROOT-RELATIVE FALLBACK FOR TELEGRAM CONSOLE CONTROLLERS */
     background-image: url("./paw.png");
-    background-size: 160px 160px; /* Adjust scale matching your layout pattern density */
+    background-size: 1254px 1254px; /* Adjust scale matching your layout pattern density */
     background-repeat: repeat;
     background-position: top left;
 }
