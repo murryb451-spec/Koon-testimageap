@@ -1,11 +1,11 @@
 /* ==========================================================================
-   1. RESET & BACKGROUND CONFIG (With Repeating White Paw Prints)
+   1. RESET & SECURE ENCODED PAW PRINT BACKGROUND
    ========================================================================== */
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    -webkit-tap-highlight-color: transparent; /* Removes blue flash on mobile tap */
+    -webkit-tap-highlight-color: transparent; /* Removes blue mobile click shadow */
 }
 
 body {
@@ -18,9 +18,9 @@ body {
     min-height: 100vh;
     overflow-x: hidden;
     
-    /* 🐾 REPEATING WHITE PAW PRINT BACKGROUND SYSTEM */
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://w3.org' viewBox='0 0 100 100' width='60' height='60' opacity='0.85'><path d='M30,35 C23,35 18,43 23,50 C26,55 35,53 35,45 C35,38 34,35 30,35 Z M70,35 C77,35 82,43 77,50 C74,55 65,53 65,45 C65,38 66,35 70,35 Z M42,20 C36,20 32,27 36,33 C39,38 47,36 47,30 C47,24 45,20 42,20 Z M58,20 C64,20 68,27 64,33 C61,38 53,36 53,30 C53,24 55,20 58,20 Z M50,50 C38,50 30,62 35,75 C38,82 45,85 50,85 C55,85 62,82 65,75 C70,62 62,50 50,50 Z' fill='%23ffffff'/></svg>");
-    background-size: 100px 100px;
+    /* 🐾 GUARANTEED REPEATING WHITE PAW PRINTS (URL ENCODED FOR TELEGRAM WEBVIEWS) */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' width='60' height='60' opacity='0.85'%3E%3Cpath d='M30,35 C23,35 18,43 23,50 C26,55 35,53 35,45 C35,38 34,35 30,35 Z M70,35 C77,35 82,43 77,50 C74,55 65,53 65,45 C65,38 66,35 70,35 Z M42,20 C36,20 32,27 36,33 C39,38 47,36 47,30 C47,24 45,20 42,20 Z M58,20 C64,20 68,27 64,33 C61,38 53,36 53,30 C53,24 55,20 58,20 Z M50,50 C38,50 30,62 35,75 C38,82 45,85 50,85 C55,85 62,82 65,75 C70,62 62,50 50,50 Z' fill='%23ffffff'/%3E%3C/svg%3E");
+    background-size: 80px 80px;
     background-repeat: repeat;
 }
 
@@ -32,11 +32,11 @@ body {
     flex-direction: column;
     align-items: center;
     min-height: 100vh;
-    background-color: rgba(0, 0, 0, 0.4); /* Subtle dark overlay so text remains readable over pawprints */
+    background-color: rgba(0, 0, 0, 0.4); /* Dark shadow backdrop so text pops over background elements */
 }
 
 /* ==========================================================================
-   2. INTERFACE ELEMENTS
+   2. INTERFACE HEADERS & IMAGES
    ========================================================================== */
 
 /* Main Header Text (Gold/Yellow tone matching the image) */
@@ -53,7 +53,7 @@ body {
 /* Character Banner Container */
 .image-wrapper {
     width: 100%;
-    border-radius: 4px; /* Matches your square-ish graphic borders */
+    border-radius: 4px; /* Crisp square borders matching the source image */
     overflow: hidden;
     margin-bottom: 20px;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.9);
@@ -86,7 +86,7 @@ body {
 }
 
 .bottom-container {
-    margin-top: auto; /* Pushes backpack to the very bottom on tall screens */
+    margin-top: auto; /* Pin backpack control panel cleanly to base */
     padding-top: 16px;
     width: 100%;
     display: flex;
@@ -94,7 +94,7 @@ body {
 }
 
 /* ==========================================================================
-   4. BUTTON STYLING (CAPSULE SYSTEM)
+   4. CAPSULE BUTTON GRADIENTS (PERFECT COLOR MATCH)
    ========================================================================== */
 .btn {
     border: none;
@@ -103,7 +103,7 @@ body {
     font-weight: 700;
     color: #FFFFFF;
     padding: 14px 20px;
-    border-radius: 30px; /* Smooth capsule look matching image */
+    border-radius: 30px; /* Fluid pill-capsule corners */
     cursor: pointer;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
     transition: transform 0.1s ease, filter 0.2s ease;
@@ -111,7 +111,7 @@ body {
     width: 100%;
 }
 
-/* Click/Tap Micro-interaction responses */
+/* Tap micro-interactions */
 .btn:active {
     transform: scale(0.96);
     filter: brightness(0.9);
