@@ -1,0 +1,105 @@
+/* Reset & Background Setup */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: #000000;
+    color: #FFFFFF;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    overflow-x: hidden;
+    /* Optional: Replicating the paw print background accents */
+    background-image: radial-gradient(rgba(255, 255, 255, 0.15) 1px, transparent 0);
+    background-size: 40px 40px;
+}
+
+.app-container {
+    width: 100%;
+    max-width: 450px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Header Text Style matching image yellow tone */
+.main-title {
+    color: #E2CD5A; 
+    font-size: 22px;
+    font-weight: 800;
+    text-align: center;
+    margin-bottom: 16px;
+    text-transform: capitalize;
+}
+
+/* Hero Image Section */
+.image-wrapper {
+    width: 100%;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 16px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+}
+
+.hero-image {
+    width: 100%;
+    display: block;
+    height: auto;
+}
+
+/* Button Layout System */
+.center-btn-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 16px;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+/* Core Button Custom Styles */
+.btn {
+    border: none;
+    outline: none;
+    font-size: 16px;
+    font-weight: bold;
+    color: #FFFFFF;
+    padding: 14px 20px;
+    border-radius: 25px; /* Creates smooth capsule look */
+    cursor: pointer;
+    transition: transform 0.1s ease, filter 0.2s ease;
+    text-align: center;
+    width: 100%;
+}
+
+.btn:active {
+    transform: scale(0.98);
+}
+
+/* Color Matching */
+.btn-green {
+    background: linear-gradient(180deg, #10A144 0%, #0A732E 100%);
+    max-width: 75%;
+}
+
+.btn-purple {
+    background: linear-gradient(180deg, #8132EB 0%, #5E1CB8 100%);
+    font-size: 15px;
+}
+
+.bottom-container {
+    margin-top: auto;
+    padding-top: 10px;
+}
