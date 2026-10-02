@@ -1,8 +1,11 @@
-/* Reset & Background Setup */
+/* ==========================================================================
+   1. RESET & BACKGROUND CONFIG
+   ========================================================================== */
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+    -webkit-tap-highlight-color: transparent; /* Removes blue flash on mobile tap */
 }
 
 body {
@@ -14,46 +17,59 @@ body {
     align-items: flex-start;
     min-height: 100vh;
     overflow-x: hidden;
-    /* Optional: Replicating the paw print background accents */
-    background-image: radial-gradient(rgba(255, 255, 255, 0.15) 1px, transparent 0);
-    background-size: 40px 40px;
+    
+    /* 🐾 Fixed Paw Print Grid Simulation */
+    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.07) 1.5px, transparent 1.5px);
+    background-size: 28px 28px;
+    background-position: center;
 }
 
 .app-container {
     width: 100%;
     max-width: 450px;
-    padding: 16px;
+    padding: 20px 16px;
     display: flex;
     flex-direction: column;
     align-items: center;
+    min-height: 100vh;
 }
 
-/* Header Text Style matching image yellow tone */
+/* ==========================================================================
+   2. INTERFACE ELEMENTS
+   ========================================================================== */
+
+/* Main Header Text (Gold/Yellow tone matching the image) */
 .main-title {
-    color: #E2CD5A; 
-    font-size: 22px;
+    color: #F1D442; 
+    font-size: 24px;
     font-weight: 800;
     text-align: center;
-    margin-bottom: 16px;
-    text-transform: capitalize;
+    margin-bottom: 18px;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.6);
+    letter-spacing: 0.5px;
 }
 
-/* Hero Image Section */
+/* Character Banner Container */
 .image-wrapper {
     width: 100%;
-    border-radius: 4px;
+    border-radius: 12px; /* Smooth rounded card corners */
     overflow: hidden;
-    margin-bottom: 16px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    margin-bottom: 20px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
+/* Hero Graphic Stretch Control */
 .hero-image {
     width: 100%;
     display: block;
     height: auto;
+    object-fit: cover;
 }
 
-/* Button Layout System */
+/* ==========================================================================
+   3. LAYOUT GRID SYSTEM
+   ========================================================================== */
 .center-btn-container {
     width: 100%;
     display: flex;
@@ -64,42 +80,51 @@ body {
 .grid-container {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 12px;
+    gap: 14px;
     width: 100%;
-    margin-bottom: 20px;
+    margin-bottom: 24px;
 }
 
-/* Core Button Custom Styles */
+.bottom-container {
+    margin-top: auto; /* Pushes backpack to the very bottom on tall screens */
+    padding-top: 16px;
+}
+
+/* ==========================================================================
+   4. BUTTON STYLING (CAPSULE SYSTEM)
+   ========================================================================== */
 .btn {
     border: none;
     outline: none;
     font-size: 16px;
-    font-weight: bold;
+    font-weight: 700;
     color: #FFFFFF;
     padding: 14px 20px;
-    border-radius: 25px; /* Creates smooth capsule look */
+    border-radius: 30px; /* Smooth capsule look */
     cursor: pointer;
-    transition: transform 0.1s ease, filter 0.2s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    transition: transform 0.1s ease, filter 0.2s ease, box-shadow 0.1s ease;
     text-align: center;
     width: 100%;
 }
 
+/* Click/Tap Micro-interaction responses */
 .btn:active {
-    transform: scale(0.98);
+    transform: scale(0.96);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    filter: brightness(0.9);
 }
 
-/* Color Matching */
+/* Green Gradient Buttons (How to Play / Backpack) */
 .btn-green {
-    background: linear-gradient(180deg, #10A144 0%, #0A732E 100%);
-    max-width: 75%;
+    background: linear-gradient(180deg, #12B44C 0%, #0A732E 100%);
+    max-width: 80%;
+    border-bottom: 3px solid #064E1F;
 }
 
+/* Purple Gradient Grid Buttons (Exploration Zones) */
 .btn-purple {
-    background: linear-gradient(180deg, #8132EB 0%, #5E1CB8 100%);
+    background: linear-gradient(180deg, #8A38FA 0%, #5E1CB8 100%);
     font-size: 15px;
-}
-
-.bottom-container {
-    margin-top: auto;
-    padding-top: 10px;
+    border-bottom: 3px solid #411185;
 }
