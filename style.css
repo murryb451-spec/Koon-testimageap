@@ -1,11 +1,11 @@
 /* ==========================================================================
-   1. RESET & REPEATING BASE64 PAW PRINT BACKGROUND (BULLETPROOF FIX)
+   1. RESET & REPEATING GITHUB PAW PRINT BACKGROUND
    ========================================================================== */
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    -webkit-tap-highlight-color: transparent; /* Removes blue flash on mobile tap */
+    -webkit-tap-highlight-color: transparent; /* Removes blue tap flash on mobile */
 }
 
 body {
@@ -18,10 +18,11 @@ body {
     min-height: 100vh;
     overflow-x: hidden;
     
-    /* 🐾 RAW BASE64 ENCODED PAW PRINT BACKGROUND PATTERN (DOES NOT REQUIRE EXTERNAL IMAGE HOSTING) */
-    background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAAC8klEQVR4nO2agY2EMAxF380dUAd0QBd0QAd0QAd0wB1wB07uFvMkW7KJZEOuV0pIAnm2Y8fGv9pms9mOf7XWOfmiz9r6rK1bba39S6C6bYhZ26S2Cfc8atvUdiqgHwNidmxbR6+wL9pW7v9uCHwbyfFDbYfAnisO7f7UAn6v7VwBvGrb88uArZ0N+Fvb88/8p7Ydfp6Y66yYIid71Yg7a6XatgW8O7K3K1gZz2bYqsh7M4ZfAnb9Z87v8bO3Z68vM3KxN2Yg5vA2Y/bXfXhC9nZz9m26O3Nq2w99uAIsY5WdGv6tIvtFzJ3Yt8R1O4CInbZ61EwP2D6yNfN4v2YgN99fP9T2Fp/vL2/y16z0wK/s6A6P/LwNWIiNtcwVb3U9X1bInKqC1fOInB/RnbB3mct7pUfscZ8FstVjFfA7vHuyI4eO38rM8Z8ZkW+6Pj1XvNX1mJHrvpMfeUfO96oR+eYvO1YFq+fKWeXG7y7sW/6iI/KOfb8N7MjN7NfMDNfO18uM3N7i0/3lVf6Sgdy8v66K9shv5O/wPZ+Rvb3MzC2O/M6eW+0vOyLv8OfWOmInZ97msh9mZidnv6bHzFzpEfveU++v+8u6vK6K9shv6R7ZkVvYkZvZ0R3p+S1dI1f60B6xV2YgN99f1wX/fS8pI9t9798uM3Of79f9Pz7vP8b66z6/pUfs++v+8iv/S/f8C7mZ/ZqZ4b6Xv7KjOzzyc/ZtrvTAr+zoDo/8vA3sys5fPWT7KOPvL7uWubxXesQe3v3rft0Re8S+r5B9S1yXfT8vI8e20f+8TWevYm9XvL5MvOfH7I+NfI7f8Xf7Wub8mOuxAogNn+w4v8fN7vA6Yvbt5OzX9JiZ7YfX9YidHLfV6WwV8Du8Y4XvW8rV41v9K6f9F2LDoY7vN6/y1/ToDv8b/Huy81fP6vE66hHZGTMw48fM7Oidp3rM3O0Rv878K8B6yqV2e0O6+KztXEG3f8wN6d6XqX+POf9EInaFfR8+v9f3bYV6WjV7e7t5vH/f87Z67PhVvO/1bZidY5VfIffhW3WOn5w9OXZ7Vv38nuxYp6pXjXid9b9w7shYfX9dkZ0eEbeS33qF3GvE/ZfH86wRD1vJ//KOnbViidv3MvG6NczpP2vEqSpYPZf/2pX5u912ux3/An8As88S6WkFfXwAAAAASUVORK5CYII=");
-    background-size: 50px 50px;
+    /* 🐾 Pulls your newly uploaded file and loops it seamlessly */
+    background-image: url("paw.png");
+    background-size: 75px 75px; /* Adjust this number to make the paws bigger or smaller */
     background-repeat: repeat;
+    background-position: top left;
 }
 
 .app-container {
@@ -32,11 +33,12 @@ body {
     flex-direction: column;
     align-items: center;
     min-height: 100vh;
-    background-color: rgba(0, 0, 0, 0.3); /* Soft shadow layer so buttons blend correctly */
+    /* Soft dark overlay so buttons and text stand out sharply over the background paws */
+    background-color: rgba(0, 0, 0, 0.4); 
 }
 
 /* ==========================================================================
-   2. INTERFACE ELEMENTS (TYPOGRAPHY & BANNER)
+   2. INTERFACE ELEMENTS (TYPOGRAPHY & CARD WRAPPERS)
    ========================================================================== */
 
 /* Main Header Text (Gold/Yellow tone matching the image) */
@@ -53,13 +55,13 @@ body {
 /* Character Banner Container */
 .image-wrapper {
     width: 100%;
-    border-radius: 4px; /* Crisp square corners perfectly match the picture */
+    border-radius: 4px; /* Matches crisp, square-ish layout structure in image */
     overflow: hidden;
     margin-bottom: 20px;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.9);
 }
 
-/* Hero Graphic Fit Setup */
+/* Hero Graphic Fit Control */
 .hero-image {
     width: 100%;
     display: block;
@@ -68,7 +70,7 @@ body {
 }
 
 /* ==========================================================================
-   3. LAYOUT GRID CONFIGURATION
+   3. GRID POSITIONING SYSTEM
    ========================================================================== */
 .center-btn-container {
     width: 100%;
@@ -86,7 +88,7 @@ body {
 }
 
 .bottom-container {
-    margin-top: auto; /* Positions backpack perfectly on high-res mobile devices */
+    margin-top: auto; /* Pushes the backpack button to the very bottom on modern phone screens */
     padding-top: 16px;
     width: 100%;
     display: flex;
@@ -94,7 +96,7 @@ body {
 }
 
 /* ==========================================================================
-   4. CAPSULE BUTTONS (PILL RADII & GRADIENTS)
+   4. CAPSULE BUTTON GRADIENTS (PERFECT REPLICA)
    ========================================================================== */
 .btn {
     border: none;
@@ -103,7 +105,7 @@ body {
     font-weight: 700;
     color: #FFFFFF;
     padding: 14px 20px;
-    border-radius: 30px; /* Fluid pill shape perfectly matches your layout graphic */
+    border-radius: 30px; /* Smooth capsule pill layout borders */
     cursor: pointer;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
     transition: transform 0.1s ease, filter 0.2s ease;
@@ -111,7 +113,7 @@ body {
     width: 100%;
 }
 
-/* Click/Tap Micro-interactions */
+/* Tap micro-interactions */
 .btn:active {
     transform: scale(0.96);
     filter: brightness(0.9);
