@@ -1,11 +1,11 @@
 /* ==========================================================================
-   1. RESET & REPEATING GITHUB PAW PRINT BACKGROUND
+   1. RESET & ROOT-RELATIVE PAW PRINT BACKGROUND FIX
    ========================================================================== */
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    -webkit-tap-highlight-color: transparent; /* Removes blue tap flash on mobile */
+    -webkit-tap-highlight-color: transparent; /* Eliminates tap delays on Android/iOS */
 }
 
 body {
@@ -18,9 +18,9 @@ body {
     min-height: 100vh;
     overflow-x: hidden;
     
-    /* 🐾 Pulls your newly uploaded file and loops it seamlessly */
-    background-image: url("paw.png");
-    background-size: 75px 75px; /* Adjust this number to make the paws bigger or smaller */
+    /* 🐾 ROOT-RELATIVE FALLBACK FOR TELEGRAM CONSOLE CONTROLLERS */
+    background-image: url("./paw.png");
+    background-size: 85px 85px; /* Adjust scale matching your layout pattern density */
     background-repeat: repeat;
     background-position: top left;
 }
@@ -33,12 +33,12 @@ body {
     flex-direction: column;
     align-items: center;
     min-height: 100vh;
-    /* Soft dark overlay so buttons and text stand out sharply over the background paws */
+    /* Keeps black layout background translucent so white prints visually track cleanly behind buttons */
     background-color: rgba(0, 0, 0, 0.4); 
 }
 
 /* ==========================================================================
-   2. INTERFACE ELEMENTS (TYPOGRAPHY & CARD WRAPPERS)
+   2. TYPOGRAPHY & IMAGE CARD WRAPPERS
    ========================================================================== */
 
 /* Main Header Text (Gold/Yellow tone matching the image) */
@@ -55,13 +55,13 @@ body {
 /* Character Banner Container */
 .image-wrapper {
     width: 100%;
-    border-radius: 4px; /* Matches crisp, square-ish layout structure in image */
+    border-radius: 4px; /* Crisp square borders tracking your asset precisely */
     overflow: hidden;
     margin-bottom: 20px;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.9);
 }
 
-/* Hero Graphic Fit Control */
+/* Hero Graphic Fit Setup */
 .hero-image {
     width: 100%;
     display: block;
@@ -70,7 +70,7 @@ body {
 }
 
 /* ==========================================================================
-   3. GRID POSITIONING SYSTEM
+   3. GRID & BOX LAYOUT ARCHITECTURE
    ========================================================================== */
 .center-btn-container {
     width: 100%;
@@ -88,7 +88,7 @@ body {
 }
 
 .bottom-container {
-    margin-top: auto; /* Pushes the backpack button to the very bottom on modern phone screens */
+    margin-top: auto; /* Locks player gear container down to device baseboards */
     padding-top: 16px;
     width: 100%;
     display: flex;
@@ -96,7 +96,7 @@ body {
 }
 
 /* ==========================================================================
-   4. CAPSULE BUTTON GRADIENTS (PERFECT REPLICA)
+   4. CAPSULE PILL GRADIENTS (MATCHES ASSIGNED PALETTE)
    ========================================================================== */
 .btn {
     border: none;
@@ -105,7 +105,7 @@ body {
     font-weight: 700;
     color: #FFFFFF;
     padding: 14px 20px;
-    border-radius: 30px; /* Smooth capsule pill layout borders */
+    border-radius: 30px; /* Capsule layout tracking */
     cursor: pointer;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
     transition: transform 0.1s ease, filter 0.2s ease;
