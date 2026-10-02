@@ -1,5 +1,5 @@
 /* ==========================================================================
-   1. RESET & BACKGROUND CONFIG
+   1. RESET & BACKGROUND CONFIG (With Repeating White Paw Prints)
    ========================================================================== */
 * {
     box-sizing: border-box;
@@ -18,10 +18,10 @@ body {
     min-height: 100vh;
     overflow-x: hidden;
     
-    /* 🐾 Fixed Paw Print Grid Simulation */
-    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.07) 1.5px, transparent 1.5px);
-    background-size: 28px 28px;
-    background-position: center;
+    /* 🐾 REPEATING WHITE PAW PRINT BACKGROUND SYSTEM */
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://w3.org' viewBox='0 0 100 100' width='60' height='60' opacity='0.85'><path d='M30,35 C23,35 18,43 23,50 C26,55 35,53 35,45 C35,38 34,35 30,35 Z M70,35 C77,35 82,43 77,50 C74,55 65,53 65,45 C65,38 66,35 70,35 Z M42,20 C36,20 32,27 36,33 C39,38 47,36 47,30 C47,24 45,20 42,20 Z M58,20 C64,20 68,27 64,33 C61,38 53,36 53,30 C53,24 55,20 58,20 Z M50,50 C38,50 30,62 35,75 C38,82 45,85 50,85 C55,85 62,82 65,75 C70,62 62,50 50,50 Z' fill='%23ffffff'/></svg>");
+    background-size: 100px 100px;
+    background-repeat: repeat;
 }
 
 .app-container {
@@ -32,6 +32,7 @@ body {
     flex-direction: column;
     align-items: center;
     min-height: 100vh;
+    background-color: rgba(0, 0, 0, 0.4); /* Subtle dark overlay so text remains readable over pawprints */
 }
 
 /* ==========================================================================
@@ -40,23 +41,22 @@ body {
 
 /* Main Header Text (Gold/Yellow tone matching the image) */
 .main-title {
-    color: #F1D442; 
+    color: #E2CD5A; 
     font-size: 24px;
     font-weight: 800;
     text-align: center;
     margin-bottom: 18px;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.6);
+    text-shadow: 0 2px 4px rgba(0,0,0,0.9), 0 0 10px rgba(0,0,0,0.8);
     letter-spacing: 0.5px;
 }
 
 /* Character Banner Container */
 .image-wrapper {
     width: 100%;
-    border-radius: 12px; /* Smooth rounded card corners */
+    border-radius: 4px; /* Matches your square-ish graphic borders */
     overflow: hidden;
     margin-bottom: 20px;
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.7);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.9);
 }
 
 /* Hero Graphic Stretch Control */
@@ -88,6 +88,9 @@ body {
 .bottom-container {
     margin-top: auto; /* Pushes backpack to the very bottom on tall screens */
     padding-top: 16px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
 }
 
 /* ==========================================================================
@@ -100,10 +103,10 @@ body {
     font-weight: 700;
     color: #FFFFFF;
     padding: 14px 20px;
-    border-radius: 30px; /* Smooth capsule look */
+    border-radius: 30px; /* Smooth capsule look matching image */
     cursor: pointer;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-    transition: transform 0.1s ease, filter 0.2s ease, box-shadow 0.1s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+    transition: transform 0.1s ease, filter 0.2s ease;
     text-align: center;
     width: 100%;
 }
@@ -111,20 +114,17 @@ body {
 /* Click/Tap Micro-interaction responses */
 .btn:active {
     transform: scale(0.96);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
     filter: brightness(0.9);
 }
 
 /* Green Gradient Buttons (How to Play / Backpack) */
 .btn-green {
-    background: linear-gradient(180deg, #12B44C 0%, #0A732E 100%);
+    background: linear-gradient(180deg, #10A144 0%, #0A732E 100%);
     max-width: 80%;
-    border-bottom: 3px solid #064E1F;
 }
 
 /* Purple Gradient Grid Buttons (Exploration Zones) */
 .btn-purple {
-    background: linear-gradient(180deg, #8A38FA 0%, #5E1CB8 100%);
+    background: linear-gradient(180deg, #8132EB 0%, #5E1CB8 100%);
     font-size: 15px;
-    border-bottom: 3px solid #411185;
 }
