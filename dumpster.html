@@ -4,47 +4,119 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Where Will Koon Look?</title>
-    <!-- Use cache-busting (?v=2) to match your CSS setup -->
+    <!-- Keeps cache-busting link matching your stylesheets -->
     <link rel="stylesheet" href="style.css?v=2">
     <script src="https://telegram.org"></script>
 </head>
 <body>
     <div class="app-container">
-        <!-- Back Button (Optional but helpful for navigation) -->
+        <!-- Back Button Navigation to Main Hub -->
         <button class="back-link" onclick="window.location.href='index.html'">← Back</button>
 
-        <!-- Dynamic Header Text -->
+        <!-- Dynamic Header Title -->
         <h1 class="main-title">Where Will Koon Look?</h1>
 
-        <!-- Dumpster Scene Graphic -->
+        <!-- Dumpster Scene Graphic Banner -->
         <div class="image-wrapper">
-            <!-- Replace with your actual dumpster image filename -->
             <img src="dumpster_scene.png" alt="Koon at the Dumpster" class="hero-image">
         </div>
 
-        <!-- 2-Column Choice Action Grid -->
+        <!-- 2-Column Choice Action Grid Layout -->
         <div class="grid-container binary-grid">
-            <!-- Choice 1 -->
+            <!-- Choice Option 1 -->
             <div class="choice-block">
-                <button class="btn btn-purple" onclick="onAction('In The Dumpster')">In The Dumpster</button>
+                <button class="btn btn-purple" onclick="rollLoot('City Dumpster')">In The Dumpster</button>
                 <p class="choice-subtext">Feels Gross, But Tempting!</p>
             </div>
 
-            <!-- Choice 2 -->
+            <!-- Choice Option 2 -->
             <div class="choice-block">
-                <button class="btn btn-purple" onclick="onAction('Under The Dumpster')">Under The Dumpster</button>
+                <button class="btn btn-purple" onclick="rollLoot('City Dumpster')">Under The Dumpster</button>
                 <p class="choice-subtext">Looks Dark, But Who Knows?</p>
             </div>
         </div>
     </div>
 
+    <!-- 🐾 DYNAMIC COFFEE LOOT POPUP MODAL CONTAINER -->
+    <div id="lootModal" class="modal-overlay">
+        <div class="modal-content">
+            <div id="dupBadge" class="duplicate-badge" style="display:none;">Owned Duplicate</div>
+            <h2 id="itemName" class="item-title">Item Name</h2>
+            <div id="itemRarity" class="item-rarity">Rarity</div>
+            
+            <div class="item-frame">
+                <img id="itemImg" src="" alt="Loot Artwork" class="item-artwork">
+            </div>
+            
+            <p id="itemDescription" class="item-desc">Item Description</p>
+
+            <!-- 📊 Live Set Metrics Progression Display Grid -->
+            <div class="progress-section" style="margin-bottom: 20px; text-align: left; background: #222; padding: 12px; border-radius: 8px; font-size: 13px;">
+                <div style="margin-bottom: 6px; display: flex; justify-content: space-between;">
+                    <span>Set Completion (<span id="setNameDisplay">Set</span>):</span>
+                    <span id="setPct" style="font-weight: bold; color: #E2CD5A;">0%</span>
+                </div>
+                <div style="margin-bottom: 12px; display: flex; justify-content: space-between; font-size: 11px; color: #aaa;">
+                    <span>Items Collected: <span id="setRatio">0/5</span></span>
+                </div>
+
+                <div style="display: flex; justify-content: space-between;">
+                    <span>Total Backpack Mastery:</span>
+                    <span id="totalPct" style="font-weight: bold; color: #12B44C;">0%</span>
+                </div>
+            </div>
+
+            <button class="btn btn-green" onclick="closeModal()">Put In Backpack</button>
+        </div>
+    </div>
+
+    <!-- 🌐 ASYNCHRONOUS PC LOCAL TUNNEL HOOK ENGINE -->
     <script>
         const tg = window.Telegram.WebApp;
         tg.expand();
+        
+        // 📍 PASTE YOUR COPIED NGROK FORWARDING LINK DIRECTLY HERE (LINE 68):
+        const BACKEND_API = "https://your-ngrok-subdomain.ngrok-free.app";
 
-        function onAction(choiceName) {
-            // Sends the decision instantly straight back to your local PC python script
-            tg.sendData(JSON.stringify({ action: choiceName }));
+        function rollLoot(zoneName) {
+            const user = tg.initDataUnsafe.user || { id: 9999, first_name: "LocalPlayer" };
+            
+            // Asynchronously fetch item data from your local PC engine endpoint
+            fetch(`${BACKEND_API}/api/roll`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    user_id: user.id,
+                    username: user.first_name,
+                    location: zoneName
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                // Map out server-rolled card details onto the page layout
+                document.getElementById("itemName").innerText = data.name;
+                document.getElementById("itemRarity").innerText = data.rarity;
+                document.getElementById("itemRarity").className = `item-rarity ${data.rarity}`;
+                document.getElementById("itemImg").src = data.artwork_image_path;
+                document.getElementById("itemDescription").innerText = data.short_description;
+                
+                // Track duplicate banner visibility
+                document.getElementById("dupBadge").style.display = data.is_duplicate ? "inline-block" : "none";
+                
+                // 📊 Update live percentage metrics
+                document.getElementById("setNameDisplay").innerText = data.set_name;
+                document.getElementById("setPct").innerText = `${data.set_completion_pct}%`;
+                document.getElementById("setRatio").innerText = `${data.set_owned_count} / ${data.set_total_count}`;
+                document.getElementById("totalPct").innerText = `${data.total_backpack_pct}%`;
+                
+                // Show the modal screen overlay block smoothly
+                document.getElementById("lootModal").style.display = "flex";
+            })
+            .catch(err => alert("PC Server Offline! Run bot.py and check your ngrok tunnel."));
+        }
+
+        function closeModal() {
+            document.getElementById("lootModal").style.display = "none";
         }
     </script>
 </body>
