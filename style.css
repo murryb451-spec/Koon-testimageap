@@ -130,3 +130,47 @@ body {
     background: linear-gradient(180deg, #8132EB 0%, #5E1CB8 100%);
     font-size: 15px;
 }
+
+/* ==========================================================================
+   5. DUMPSTER SUB-PAGE EXTENSIONS
+   ========================================================================== */
+
+/* Split layout specifically optimized for the 2-button horizontal setup */
+.binary-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    width: 100%;
+    margin-top: 10px;
+    align-items: flex-start;
+}
+
+/* Container bundling a choice button together with its subtext description */
+.choice-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+/* Descriptive captioning layout under purple choices */
+.choice-subtext {
+    font-size: 14px;
+    font-weight: 600;
+    color: #F1D442; /* Soft Gold matching your title palette */
+    margin-top: 10px;
+    line-height: 1.4;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9);
+    padding: 0 4px;
+}
+
+/* Helper back link layout style if a player wants to return to the main map */
+.back-link {
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    align-self: flex-start;
+    margin-bottom: 10px;
+}
