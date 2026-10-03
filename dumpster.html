@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Where Will Koon Look?</title>
+    <!-- Use cache-busting (?v=2) to match your CSS setup -->
+    <link rel="stylesheet" href="style.css?v=2">
+    <script src="https://telegram.org"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Back Button (Optional but helpful for navigation) -->
+        <button class="back-link" onclick="window.location.href='index.html'">← Back</button>
+
+        <!-- Dynamic Header Text -->
+        <h1 class="main-title">Where Will Koon Look?</h1>
+
+        <!-- Dumpster Scene Graphic -->
+        <div class="image-wrapper">
+            <!-- Replace with your actual dumpster image filename -->
+            <img src="dumpster_scene.png" alt="Koon at the Dumpster" class="hero-image">
+        </div>
+
+        <!-- 2-Column Choice Action Grid -->
+        <div class="grid-container binary-grid">
+            <!-- Choice 1 -->
+            <div class="choice-block">
+                <button class="btn btn-purple" onclick="onAction('In The Dumpster')">In The Dumpster</button>
+                <p class="choice-subtext">Feels Gross, But Tempting!</p>
+            </div>
+
+            <!-- Choice 2 -->
+            <div class="choice-block">
+                <button class="btn btn-purple" onclick="onAction('Under The Dumpster')">Under The Dumpster</button>
+                <p class="choice-subtext">Looks Dark, But Who Knows?</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const tg = window.Telegram.WebApp;
+        tg.expand();
+
+        function onAction(choiceName) {
+            // Sends the decision instantly straight back to your local PC python script
+            tg.sendData(JSON.stringify({ action: choiceName }));
+        }
+    </script>
+</body>
+</html>
