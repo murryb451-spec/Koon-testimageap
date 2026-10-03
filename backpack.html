@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Koon's Backpack Inventory</title>
+    <!-- Use cache-busting link matching your styles -->
+    <link rel="stylesheet" href="style.css?v=2">
+    <script src="https://telegram.org"></script>
+</head>
+<body class="backpack-body">
+    <div class="app-container backpack-layout">
+        <!-- Map Navigation Header Controls -->
+        <div class="backpack-header">
+            <button class="back-link" onclick="window.location.href='index.html'">← Back Map</button>
+            <div class="mastery-badge">Mastery: <span id="masteryPct">0%</span></div>
+        </div>
+
+        <!-- Scrollable Item Shelving Canvas Frame -->
+        <div id="shelfContainer" class="shelf-scroll-area">
+            <!-- JavaScript will populate categories and items natively here -->
+            <div class="loading-text">Opening Backpack...</div>
+        </div>
+    </div>
+
+    <!-- 🌐 ASYNCHRONOUS PACK PARSER ENGINE -->
+    <script>
+        const tg = window.Telegram.WebApp;
+        tg.expand();
+
+        // 📍 PASTE YOUR EXACT SAME LIVE NGROK FORWARDING LINK HERE:
+        const BACKEND_API = "https://ngrok-free.app";
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const user = tg.initDataUnsafe.user || { id: 9999 };
+
+            // Request full inventory layout index from local PC database rows
+            fetch(`${BACKEND_API}/api/backpack`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ user_id: user.id })
+            })
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById("masteryPct").innerText = `${data.overall_progress_pct}%`;
+                const container = document.getElementById("shelfContainer");
+                container.innerHTML = ""; // Clear loader text string
+
+                // Loop through nested catalog collection array matrix
+                data.sets.forEach(set => {
+                    const setWrapper = document.createElement("div");
+                    setWrapper.className = "set-group-card";
+
+                    setWrapper.innerHTML = `
+                        <div class="set-meta-header">
+                            <span class="set-title-label">${set.set_name}</span>
+                            <span class="set-ratio-counter ${set.rarity}">${set.owned_count}/${set.total_count}</span>
+                        </div>
+                        <div class="item-grid-row">
+                            ${set.items.map(item => `
+                                <div class="inventory-slot item.owned ? 'slot-unlocked' : 'slot-locked'" onclick="inspectItem('{item.name}', '\({item.short_description}', '\){item.rarity}')">
+                                    <img src="\({item.artwork_image_path}" alt="\){item.name}" class="slot-thumbnail">
+                                </div>
+                            `).join('')}
+                        </div>
+                    `;
+                    container.appendChild(setWrapper);
+                });
+            })
+            .catch(err => {
+                document.getElementById("shelfContainer").innerHTML = `<div class="error-text">PC Server Offline! Check bot.py and Ngrok proxy pipelines.</div>`;
+            });
+        });
+
+        function inspectItem(name, desc, rarity) {
+            // Native micro-alert display summary for inspecting item stats
+            alert(`[${rarity}] ${name}\n\n${desc}`);
+        }
+    </script>
+</body>
+</html>
