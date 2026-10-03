@@ -1,11 +1,11 @@
 /* ==========================================================================
-   1. RESET & ROOT-RELATIVE PAW PRINT BACKGROUND FIX
+   1. CORE APPARATUS CONFIG, RESETS, & PAW BACKGROUND ENGINE
    ========================================================================== */
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    -webkit-tap-highlight-color: transparent; /* Eliminates tap delays on Android/iOS */
+    -webkit-tap-highlight-color: transparent; /* Removes flashing web outlines on mobile tap */
 }
 
 body {
@@ -18,9 +18,9 @@ body {
     min-height: 100vh;
     overflow-x: hidden;
     
-    /* 🐾 ROOT-RELATIVE FALLBACK FOR TELEGRAM CONSOLE CONTROLLERS */
+    /* 🐾 ROOT-RELATIVE PAW PATTERN DIRECTORY FALLBACK MAP ENGINE */
     background-image: url("./paw.png");
-    background-size: 700px 700px; /* Adjust scale matching your layout pattern density */
+    background-size: 180px 180px; /* Scaled-up layout density per calibration tracking */
     background-repeat: repeat;
     background-position: top left;
 }
@@ -33,15 +33,15 @@ body {
     flex-direction: column;
     align-items: center;
     min-height: 100vh;
-    /* Keeps black layout background translucent so white prints visually track cleanly behind buttons */
+    /* Soft shading veil protecting text components over background vectors */
     background-color: rgba(0, 0, 0, 0.4); 
 }
 
 /* ==========================================================================
-   2. TYPOGRAPHY & IMAGE CARD WRAPPERS
+   2. MAIN HUB HEADER & IMAGE FRAMING CARDS
    ========================================================================== */
 
-/* Main Header Text (Gold/Yellow tone matching the image) */
+/* Main Game Header Typography System (Classic Gold/Yellow Palette) */
 .main-title {
     color: #E2CD5A; 
     font-size: 24px;
@@ -52,16 +52,16 @@ body {
     letter-spacing: 0.5px;
 }
 
-/* Character Banner Container */
+/* Screen Graphic Wrapper Enclosures */
 .image-wrapper {
     width: 100%;
-    border-radius: 4px; /* Crisp square borders tracking your asset precisely */
+    border-radius: 4px; /* Matches crisp, square-ish layout boundaries in source images */
     overflow: hidden;
     margin-bottom: 20px;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.9);
 }
 
-/* Hero Graphic Fit Setup */
+/* Core Stretch / Content Layout Control for Graphics */
 .hero-image {
     width: 100%;
     display: block;
@@ -70,7 +70,7 @@ body {
 }
 
 /* ==========================================================================
-   3. GRID & BOX LAYOUT ARCHITECTURE
+   3. NAVIGATION GRIDS & BUTTON SYSTEMS (CAPSULE PILL FORMAT)
    ========================================================================== */
 .center-btn-container {
     width: 100%;
@@ -88,16 +88,14 @@ body {
 }
 
 .bottom-container {
-    margin-top: auto; /* Locks player gear container down to device baseboards */
+    margin-top: auto; /* Pushes the main backpack trigger down to device baseboards */
     padding-top: 16px;
     width: 100%;
     display: flex;
     justify-content: center;
 }
 
-/* ==========================================================================
-   4. CAPSULE PILL GRADIENTS (MATCHES ASSIGNED PALETTE)
-   ========================================================================== */
+/* Core Button Blueprints */
 .btn {
     border: none;
     outline: none;
@@ -105,7 +103,7 @@ body {
     font-weight: 700;
     color: #FFFFFF;
     padding: 14px 20px;
-    border-radius: 30px; /* Capsule layout tracking */
+    border-radius: 30px; /* Smooth capsule architecture */
     cursor: pointer;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
     transition: transform 0.1s ease, filter 0.2s ease;
@@ -113,29 +111,27 @@ body {
     width: 100%;
 }
 
-/* Tap micro-interactions */
+/* Mobile Micro-Interaction Press Animations */
 .btn:active {
     transform: scale(0.96);
     filter: brightness(0.9);
 }
 
-/* Green Gradient Buttons (How to Play / Backpack) */
+/* Green Gradient Capsule Controllers (How to Play / Action Endpoints) */
 .btn-green {
     background: linear-gradient(180deg, #10A144 0%, #0A732E 100%);
     max-width: 80%;
 }
 
-/* Purple Gradient Grid Buttons (Exploration Zones) */
+/* Purple Gradient Capsule Controllers (Map Grid Elements) */
 .btn-purple {
     background: linear-gradient(180deg, #8132EB 0%, #5E1CB8 100%);
     font-size: 15px;
 }
 
 /* ==========================================================================
-   5. DUMPSTER SUB-PAGE EXTENSIONS
+   4. TWO-COLUMN SPLIT BINARY LOCATION CHOICES
    ========================================================================== */
-
-/* Split layout specifically optimized for the 2-button horizontal setup */
 .binary-grid {
     grid-template-columns: 1fr 1fr;
     gap: 16px;
@@ -144,7 +140,6 @@ body {
     align-items: flex-start;
 }
 
-/* Container bundling a choice button together with its subtext description */
 .choice-block {
     display: flex;
     flex-direction: column;
@@ -152,25 +147,262 @@ body {
     text-align: center;
 }
 
-/* Descriptive captioning layout under purple choices */
+/* Captions Under Purple Selection Arrays */
 .choice-subtext {
     font-size: 14px;
     font-weight: 600;
-    color: #F1D442; /* Soft Gold matching your title palette */
+    color: #E2CD5A; /* Gold matching header themes */
     margin-top: 10px;
     line-height: 1.4;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9);
     padding: 0 4px;
 }
 
-/* Helper back link layout style if a player wants to return to the main map */
+/* Standardized Map Back Link UI */
 .back-link {
     background: transparent;
     border: none;
-    color: rgba(255, 255, 255, 0.6);
+    color: rgba(255, 255, 255, 0.7);
     font-size: 14px;
     font-weight: bold;
     cursor: pointer;
     align-self: flex-start;
+    margin-bottom: 12px;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+}
+
+/* ==========================================================================
+   5. REAL-TIME LOOT DROP OVERLAY & METRICS MODAL WINDOWS
+   ========================================================================== */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.85);
+    display: none; /* Controlled dynamically by JavaScript endpoints */
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    padding: 20px;
+}
+
+.modal-content {
+    background: #111111;
+    border: 2px solid #E2CD5A;
+    border-radius: 16px;
+    width: 100%;
+    max-width: 360px;
+    padding: 24px;
+    text-align: center;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.8);
+    animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes popIn {
+    from { transform: scale(0.7); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+.item-title {
+    font-size: 22px;
+    font-weight: 800;
+    margin-bottom: 4px;
+}
+
+.item-rarity {
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 16px;
+}
+
+/* Dynamic Tier Text Coloring */
+.COMMON { color: #12B44C; }
+.RARE { color: #3281EB; }
+.LEGENDARY { color: #A132EB; }
+
+/* Display Frame for Discovery Card Artwork */
+.item-frame {
+    width: 140px;
+    height: 140px;
+    margin: 0 auto 16px auto;
+    border-radius: 12px;
+    background: #1a1a1a;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.item-artwork {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.item-desc {
+    font-size: 14px;
+    color: #cccccc;
+    line-height: 1.5;
+    margin-bottom: 20px;
+}
+
+/* Flashy Warning Banner for Recycled Duplicates */
+.duplicate-badge {
+    display: inline-block;
+    background: #e63946;
+    color: #fff;
+    font-size: 11px;
+    font-weight: bold;
+    padding: 4px 8px;
+    border-radius: 4px;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* ==========================================================================
+   6. BACKPACK COLLECTION SHELF SYSTEM (VINTAGE CANVAS MAPPING)
+   ========================================================================== */
+
+/* Automatically links your uploaded vintage leather illustration graphic */
+.backpack-body {
+    background-image: url("backpack_bg.png") !important;
+    background-size: cover !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    background-attachment: fixed;
+}
+
+.backpack-layout {
+    background-color: transparent !important; /* Shuts off veil layers to render leather directly */
+    height: 100vh;
+    overflow: hidden;
+}
+
+.backpack-header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    padding: 0 4px;
+}
+
+.mastery-badge {
+    background: rgba(16, 161, 68, 0.9);
+    border: 1px solid #12B44C;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: bold;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+}
+
+/* Masked Scroll Box Area */
+.shelf-scroll-area {
+    width: 100%;
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 4px;
     margin-bottom: 10px;
 }
+
+/* Clean Custom Scroll Trackers for Mobile Views */
+.shelf-scroll-area::-webkit-scrollbar {
+    width: 4px;
+}
+.shelf-scroll-area::-webkit-scrollbar-thumb {
+    background: rgba(226, 205, 90, 0.4);
+    border-radius: 2px;
+}
+
+/* Content Blocks Enclosing Coffee Set Groupings */
+.set-group-card {
+    background: rgba(0, 0, 0, 0.65);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 14px;
+    margin-bottom: 16px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+}
+
+.set-meta-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding-bottom: 6px;
+}
+
+.set-title-label {
+    font-size: 15px;
+    font-weight: 800;
+    color: #E2CD5A;
+}
+
+.set-ratio-counter {
+    font-size: 12px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.08);
+}
+
+/* Grid Matrix Generating 5 Shelf Slots per Row */
+.item-grid-row {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+    width: 100%;
+}
+
+/* Standalone Inventory Storage Cells */
+.inventory-slot {
+    aspect-ratio: 1 / 1;
+    border-radius: 8px;
+    background: rgba(20, 20, 20, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    padding: 4px;
+    cursor: pointer;
+    transition: transform 0.1s ease;
+}
+
+.inventory-slot:active {
+    transform: scale(0.92);
+}
+
+/* Custom States for Collected Items vs Locked Silhouettes */
+.slot-unlocked {
+    border-color: rgba(226, 205, 90, 0.5);
+    box-shadow: inset 0 0 8px rgba(226, 205, 90, 0.15);
+}
+
+.slot-locked {
+    filter: grayscale(1) brightness(0.35); /* Enforces dark silhouette masking on unowned items */
+    opacity: 0.5;
+}
+
+.slot-thumbnail {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.loading-text, .error-text {
+text-align: center;
+font-size: 14px;
+font-weight: bold;
+padding: 4px;
+margin-top: 40px;
+}
+.error-text { color: #e63946; }
