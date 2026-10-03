@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Where Will Koon Look?</title>
+    <!-- Keep your cache-busting version parameter matching -->
+    <link rel="stylesheet" href="style.css?v=2">
+    <script src="https://telegram.org"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Back Link Navigation -->
+        <button class="back-link" onclick="window.location.href='index.html'">← Back Map</button>
+
+        <!-- Header Title matching your image -->
+        <h1 class="main-title">Where Will Koon Look?</h1>
+
+        <!-- Cabin Scene Card Banner -->
+        <div class="image-wrapper">
+            <!-- Replace with your actual cabin image filename -->
+            <img src="cabin_scene.png" alt="Koon at the Lake Cabin" class="hero-image">
+        </div>
+
+        <!-- 2-Column Choice Action Grid -->
+        <div class="grid-container binary-grid">
+            <!-- Choice 1 -->
+            <div class="choice-block">
+                <button class="btn btn-purple" onclick="onAction('Inside The Cabin')">Inside The Cabin</button>
+                <p class="choice-subtext">Feels Cozy, Maybe Something Was Left Behind.</p>
+            </div>
+
+            <!-- Choice 2 -->
+            <div class="choice-block">
+                <button class="btn btn-purple" onclick="onAction('In The Bushes')">In The Bushes</button>
+                <p class="choice-subtext">Seems A Bit Off Path, But You Never Know.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const tg = window.Telegram.WebApp;
+        tg.expand();
+
+        function onAction(choiceName) {
+            // Sends the data directly back to your local PC python script execution
+            tg.sendData(JSON.stringify({ action: choiceName }));
+        }
+    </script>
+</body>
+</html>
