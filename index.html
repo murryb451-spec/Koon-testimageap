@@ -4,29 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Koon Sets Out To Explore</title>
+    <!-- Use cache-busting (?v=2) to match your layout modifications -->
+    <link rel="stylesheet" href="style.css?v=2">
     <!-- Telegram Web Apps API Script -->
     <script src="https://telegram.org"></script>
-    <link rel="stylesheet" href="style.css?v=3">
-
 </head>
 <body>
     <div class="app-container">
-        <!-- Header -->
+        <!-- Main Hub Header Title matching theme colors -->
         <h1 class="main-title">Koon Sets Out To Explore</h1>
 
-        <!-- Character Banner -->
+        <!-- Raccoon Character Banner Card Layout -->
         <div class="image-wrapper">
-            <!-- Replace with your hosted image URL -->
             <img src="raccoon.png" alt="Koon the Raccoon" class="hero-image">
-
         </div>
 
-        <!-- How To Play Button -->
+        <!-- How To Play Information Button Triggers -->
         <div class="center-btn-container">
-            <button class="btn btn-green btn-how-to" onclick="onAction('How to Play')">How To Play ?</button>
+            <button class="btn btn-green btn-how-to" onclick="showRulesModal()">How To Play ?</button>
         </div>
 
-        <!-- 2x2 Action Grid -->
+        <!-- 2x2 Map Action Navigation Grid Layout -->
         <div class="grid-container">
             <button class="btn btn-purple" onclick="window.location.href='dumpster.html'">City Dumpster</button>
             <button class="btn btn-purple" onclick="window.location.href='cabin.html'">Lake Cabin</button>
@@ -34,21 +32,38 @@
             <button class="btn btn-purple" onclick="window.location.href='well.html'">Abandoned Well</button>
         </div>
 
-        <!-- Bottom Action Button -->
+        <!-- Persistent Bottom Action Backpack Launcher Button -->
         <div class="center-btn-container bottom-container">
-            <button class="btn btn-green btn-backpack" onclick="onAction('My Backpack')">My Backpack</button>
+            <button class="btn btn-green btn-backpack" onclick="window.location.href='backpack.html'">My Backpack</button>
+        </div>
+    </div>
+
+    <!-- 📖 INTERACTIVE HOW TO PLAY RULES MODAL LAYER -->
+    <div id="rulesModal" class="modal-overlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.85); display: none; justify-content: center; align-items: center; z-index: 1000; padding: 20px;">
+        <div class="modal-content" style="background: #111111; border: 2px solid #E2CD5A; border-radius: 16px; width: 100%; max-width: 360px; padding: 24px; text-align: center; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.8);">
+            <h2 class="item-title" style="font-size: 22px; font-weight: 800; color: #E2CD5A; margin-bottom: 12px;">How To Play ?</h2>
+            
+            <p class="item-desc" style="font-size: 14px; color: #cccccc; line-height: 1.6; text-align: left; margin-bottom: 20px;">
+                🐾 <strong>Step 1:</strong> Select any of the 4 locations on the map grid to send Koon exploring.<br><br>
+                ☕ <strong>Step 2:</strong> Tap an action choice inside that area to search for hidden coffee collectibles.<br><br>
+                💎 <strong>Step 3:</strong> Build your mastery percentage! Collect Common (80%), Rare (18%), and Legendary (2%) item sets to load up your backpack!
+            </p>
+            
+            <button class="btn btn-green" onclick="closeRulesModal()">Got It!</button>
         </div>
     </div>
 
     <script>
-        // Initialize Telegram WebApp API
+        // Initialize Telegram WebApp UI View Configurations
         const tg = window.Telegram.WebApp;
-        tg.expand(); // Expands the webview to full height
+        tg.expand(); // Maximizes canvas viewport scale height inside device screens
 
-        function onAction(actionName) {
-            // Optional: Send data back to your python bot backend
-            tg.sendData(JSON.stringify({ action: actionName }));
-            alert("Exploring: " + actionName);
+        // Popup rule control operators
+        type = function showRulesModal() {
+            document.getElementById("rulesModal").style.display = "flex";
+        }
+        function closeRulesModal() {
+            document.getElementById("rulesModal").style.display = "none";
         }
     </script>
 </body>
