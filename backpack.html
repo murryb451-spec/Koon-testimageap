@@ -4,22 +4,38 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Koon's Backpack Inventory</title>
-    <!-- Use cache-busting link matching your styles -->
-    <link rel="stylesheet" href="style.css?v=2">
+    <!-- Configured to match your cache-busting v=3 stylesheet -->
+    <link rel="stylesheet" href="style.css?v=3">
     <script src="https://telegram.org"></script>
 </head>
 <body class="backpack-body">
     <div class="app-container backpack-layout">
-        <!-- Map Navigation Header Controls -->
+        
+        <!-- Navigation Hub Bars -->
         <div class="backpack-header">
             <button class="back-link" onclick="window.location.href='index.html'">← Back Map</button>
             <div class="mastery-badge">Mastery: <span id="masteryPct">0%</span></div>
         </div>
 
-        <!-- Scrollable Item Shelving Canvas Frame -->
+        <!-- Scrollable Shelving Layout Frame -->
         <div id="shelfContainer" class="shelf-scroll-area">
-            <!-- JavaScript will populate categories and items natively here -->
             <div class="loading-text">Opening Backpack...</div>
+        </div>
+    </div>
+
+    <!-- 🔍 INTERACTIVE ITEM DETAILS MODAL DRAWER LAYER -->
+    <div id="itemDetailsModal" class="modal-overlay">
+        <div class="modal-content">
+            <h2 id="inspectName" class="item-title">Item Name</h2>
+            <div id="inspectRarity" class="item-rarity">RARITY</div>
+            
+            <div class="item-frame">
+                <img id="inspectImg" src="" alt="Item Card Thumbnail" class="item-artwork">
+            </div>
+            
+            <p id="inspectDescription" class="item-desc">Item Description</p>
+            
+            <button class="btn btn-green" onclick="closeInspectModal()">Close Details</button>
         </div>
     </div>
 
@@ -34,7 +50,7 @@
         document.addEventListener("DOMContentLoaded", () => {
             const user = tg.initDataUnsafe.user || { id: 9999 };
 
-            // Request full inventory layout index from local PC database rows
+            // Request full inventory index tracking arrays from your local PC database
             fetch(`${BACKEND_API}/api/backpack`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -44,9 +60,9 @@
             .then(data => {
                 document.getElementById("masteryPct").innerText = `${data.overall_progress_pct}%`;
                 const container = document.getElementById("shelfContainer");
-                container.innerHTML = ""; // Clear loader text string
+                container.innerHTML = ""; // Clear active loading string text
 
-                // Loop through nested catalog collection array matrix
+                // Map your nested coffee collection arrays into the visual layout shelf
                 data.sets.forEach(set => {
                     const setWrapper = document.createElement("div");
                     setWrapper.className = "set-group-card";
@@ -57,24 +73,43 @@
                             <span class="set-ratio-counter ${set.rarity}">${set.owned_count}/${set.total_count}</span>
                         </div>
                         <div class="item-grid-row">
-                            ${set.items.map(item => `
-                                <div class="inventory-slot item.owned ? 'slot-unlocked' : 'slot-locked'" onclick="inspectItem('{item.name}', '\({item.short_description}', '\){item.rarity}')">
-                                    <img src="\({item.artwork_image_path}" alt="\){item.name}" class="slot-thumbnail">
-                                </div>
-                            `).join('')}
+                            ${set.items.map(item => {
+                                // Escape single quotes safely to protect descriptive string mapping parameters
+                                const cleanDesc = item.short_description.replace(/'/g, "\\'");
+                                const cleanName = item.name.replace(/'/g, "\\'");
+                                
+                                return `
+                                    <div class="inventory-slot \${item.owned ? 'slot-unlocked' : 'slot-locked'}" 
+                                         onclick="inspectItem('cleanName', '{cleanDesc}', '\({item.artwork_image_path}', '\){set.rarity}')">
+                                        <img src="\({item.artwork_image_path}" alt="\){item.name}" class="slot-thumbnail">
+                                    </div>
+                                `;
+                            }).join('')}
                         </div>
                     `;
                     container.appendChild(setWrapper);
                 });
             })
             .catch(err => {
-                document.getElementById("shelfContainer").innerHTML = `<div class="error-text">PC Server Offline! Check bot.py and Ngrok proxy pipelines.</div>`;
+                document.getElementById("shelfContainer").innerHTML = 
+                    `<div class="error-text">PC Server Offline! Run bot.py and check your active Ngrok pipeline links.</div>`;
             });
         });
 
-        function inspectItem(name, desc, rarity) {
-            // Native micro-alert display summary for inspecting item stats
-            alert(`[${rarity}] ${name}\n\n${desc}`);
+        // Interactive asset inspector function
+        function inspectItem(name, desc, imgPath, rarity) {
+            document.getElementById("inspectName").innerText = name;
+            document.getElementById("inspectRarity").innerText = rarity;
+            document.getElementById("inspectRarity").className = `item-rarity ${rarity}`;
+            document.getElementById("inspectImg").src = imgPath;
+            document.getElementById("inspectDescription").innerText = desc;
+            
+            // Pop open details layout grid card overlay modal block smooth framework
+            document.getElementById("itemDetailsModal").style.display = "flex";
+        }
+
+        function closeInspectModal() {
+            document.getElementById("itemDetailsModal").style.display = "none";
         }
     </script>
 </body>
