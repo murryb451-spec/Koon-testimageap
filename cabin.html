@@ -4,32 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Where Will Koon Look?</title>
-    <!-- Keeps cache-busting link matching your stylesheets -->
-    <link rel="stylesheet" href="style.css?v=2">
+    <!-- Use version cache-busting v=4 to instantly clear the styling cache wall -->
+    <link rel="stylesheet" href="style.css?v=4">
     <script src="https://telegram.org"></script>
 </head>
 <body>
     <div class="app-container">
         <!-- Back Button Navigation to Main Hub -->
-        <button class="back-link" onclick="window.location.href='index.html'">← Back</button>
+        <button class="back-link" onclick="window.location.href='index.html'">← Back Map</button>
 
         <!-- Dynamic Header Title -->
         <h1 class="main-title">Where Will Koon Look?</h1>
 
-        <!-- Cabin Scene Graphic Banner -->
+        <!-- Scene Banner Graphic -->
         <div class="image-wrapper">
-            <img src="cabin_scene.png" alt="Koon at the Lake Cabin" class="hero-image">
+            <img src="cabin_scene.png" alt="Koon Scene" class="hero-image">
         </div>
 
         <!-- 2-Column Choice Action Grid Layout -->
         <div class="grid-container binary-grid">
-            <!-- Choice Option 1 -->
             <div class="choice-block">
                 <button class="btn btn-purple" onclick="rollLoot('Lake Cabin')">Inside The Cabin</button>
                 <p class="choice-subtext">Feels Cozy, Maybe Something Was Left Behind.</p>
             </div>
-
-            <!-- Choice Option 2 -->
             <div class="choice-block">
                 <button class="btn btn-purple" onclick="rollLoot('Lake Cabin')">In The Bushes</button>
                 <p class="choice-subtext">Seems A Bit Off Path, But You Never Know.</p>
@@ -59,7 +56,6 @@
                 <div style="margin-bottom: 12px; display: flex; justify-content: space-between; font-size: 11px; color: #aaa;">
                     <span>Items Collected: <span id="setRatio">0/5</span></span>
                 </div>
-
                 <div style="display: flex; justify-content: space-between;">
                     <span>Total Backpack Mastery:</span>
                     <span id="totalPct" style="font-weight: bold; color: #12B44C;">0%</span>
@@ -70,13 +66,13 @@
         </div>
     </div>
 
-    <!-- 🌐 ASYNCHRONOUS PC LOCAL TUNNEL HOOK ENGINE -->
+    <!-- 🌐 ASYNCHRONOUS ENGINE SCRIPTS -->
     <script>
         const tg = window.Telegram.WebApp;
         tg.expand();
         
-        // 📍 PASTE YOUR SAME COPIED NGROK FORWARDING LINK DIRECTLY HERE (LINE 68):
-        const BACKEND_API = "https://nugget-impromptu-carefully.ngrok-free.dev";
+        // 📍 YOUR PERMANENT DEVELOPER DOMAIN LINK:
+        const BACKEND_API = "https://murryb451-spec.github.io/Koon-testimageap/";
 
         function rollLoot(zoneName) {
             const user = tg.initDataUnsafe.user || { id: 9999, first_name: "LocalPlayer" };
@@ -91,9 +87,14 @@
                     location: zoneName
                 })
             })
-            .then(res => res.json())
+            .then(res => {
+                if (!res.ok) {
+                    throw new Error("Daily Cooldown Active or Network Mismatch");
+                }
+                return res.json();
+            })
             .then(data => {
-                // Map out server-rolled card details onto the page layout
+                // Map out server-rolled card details onto the page layout safely
                 document.getElementById("itemName").innerText = data.name;
                 document.getElementById("itemRarity").innerText = data.rarity;
                 document.getElementById("itemRarity").className = `item-rarity ${data.rarity}`;
@@ -112,11 +113,15 @@
                 // Show the modal screen overlay block smoothly
                 document.getElementById("lootModal").style.display = "flex";
             })
-            .catch(err => alert("PC Server Offline! Run bot.py and check your ngrok tunnel."));
+            .catch(err => {
+                alert("Cannot roll loot! Make sure bot.py is running, your ngrok tunnel is online, and your 24-hour daily countdown is not active.");
+            });
         }
 
         function closeModal() {
             document.getElementById("lootModal").style.display = "none";
+            // Return back to map menu home to update the daily countdown clock trigger instantly
+            window.location.href = 'index.html';
         }
     </script>
 </body>
