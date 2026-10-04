@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Koon's Backpack Inventory</title>
-    <!-- Configured to match your cache-busting v=4 stylesheet link -->
-    <link rel="stylesheet" href="style.css?v=4">
+    <!-- Configured to match your cache-busting v=5 stylesheet link -->
+    <link rel="stylesheet" href="style.css?v=5">
     <script src="https://telegram.org"></script>
 </head>
 <body class="backpack-body">
@@ -44,7 +44,7 @@
         const tg = window.Telegram.WebApp;
         tg.expand();
 
-        // 📍 PASTE YOUR EXACT SAME LIVE NGROK FORWARDING LINK HERE:
+        // 📍 YOUR PERMANENT DEVELOPER DOMAIN LINK:
         const BACKEND_API = "https://ngrok-free.dev";
 
         document.addEventListener("DOMContentLoaded", () => {
@@ -67,7 +67,7 @@
                     const setWrapper = document.createElement("div");
                     setWrapper.className = "set-group-card";
 
-                    // Generate list slots securely bypassing single-quote string break pitfalls
+                    // Generate list slots securely bypassing string break pitfalls
                     let itemsHtml = "";
                     set.items.forEach(item => {
                         const cleanName = item.name.replace(/'/g, "\\'");
@@ -108,7 +108,7 @@
             document.getElementById("inspectImg").src = imgPath;
             document.getElementById("inspectDescription").innerText = desc;
             
-            // Pop open details layout grid card overlay modal block smooth framework
+            // Pop open details layout grid card overlay modal block smoothly
             document.getElementById("itemDetailsModal").style.display = "flex";
         }
 
