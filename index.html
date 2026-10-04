@@ -4,67 +4,123 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Koon Sets Out To Explore</title>
-    <!-- Use cache-busting (?v=2) to match your layout modifications -->
-    <link rel="stylesheet" href="style.css?v=2">
-    <!-- Telegram Web Apps API Script -->
+    <!-- Kept at version cache-busting v=3 -->
+    <link rel="stylesheet" href="style.css?v=3">
     <script src="https://telegram.org"></script>
 </head>
 <body>
     <div class="app-container">
-        <!-- Main Hub Header Title matching theme colors -->
-        <h1 class="main-title">Koon Sets Out To Explore</h1>
+        <!-- Dynamic Header (Changes to countdown timer if user is locked out) -->
+        <h1 id="hubHeader" class="main-title">Koon Sets Out To Explore</h1>
 
-        <!-- Raccoon Character Banner Card Layout -->
+        <!-- Character Banner -->
         <div class="image-wrapper">
             <img src="raccoon.png" alt="Koon the Raccoon" class="hero-image">
         </div>
 
-        <!-- How To Play Information Button Triggers -->
+        <!-- How To Play Info -->
         <div class="center-btn-container">
             <button class="btn btn-green btn-how-to" onclick="showRulesModal()">How To Play ?</button>
         </div>
 
-        <!-- 2x2 Map Action Navigation Grid Layout -->
+        <!-- 2x2 Map Action Navigation Grid -->
         <div class="grid-container">
-            <button class="btn btn-purple" onclick="window.location.href='dumpster.html'">City Dumpster</button>
-            <button class="btn btn-purple" onclick="window.location.href='cabin.html'">Lake Cabin</button>
-            <button class="btn btn-purple" onclick="window.location.href='cave.html'">Mountain Cave</button>
-            <button class="btn btn-purple" onclick="window.location.href='well.html'">Abandoned Well</button>
+            <button id="loc1" class="btn btn-purple map-node" onclick="window.location.href='dumpster.html'">City Dumpster</button>
+            <button id="loc2" class="btn btn-purple map-node" onclick="window.location.href='cabin.html'">Lake Cabin</button>
+            <button id="loc3" class="btn btn-purple map-node" onclick="window.location.href='cave.html'">Mountain Cave</button>
+            <button id="loc4" class="btn btn-purple map-node" onclick="window.location.href='well.html'">Abandoned Well</button>
         </div>
 
-        <!-- Persistent Bottom Action Backpack Launcher Button -->
+        <!-- Backpack Button stays active so they can always check their bag -->
         <div class="center-btn-container bottom-container">
             <button class="btn btn-green btn-backpack" onclick="window.location.href='backpack.html'">My Backpack</button>
         </div>
     </div>
 
-    <!-- 📖 INTERACTIVE HOW TO PLAY RULES MODAL LAYER -->
+    <!-- Rules Modal Layer -->
     <div id="rulesModal" class="modal-overlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.85); display: none; justify-content: center; align-items: center; z-index: 1000; padding: 20px;">
-        <div class="modal-content" style="background: #111111; border: 2px solid #E2CD5A; border-radius: 16px; width: 100%; max-width: 360px; padding: 24px; text-align: center; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.8);">
+        <div class="modal-content" style="background: #111111; border: 2px solid #E2CD5A; border-radius: 16px; width: 100%; max-width: 360px; padding: 24px; text-align: center;">
             <h2 class="item-title" style="font-size: 22px; font-weight: 800; color: #E2CD5A; margin-bottom: 12px;">How To Play ?</h2>
-            
             <p class="item-desc" style="font-size: 14px; color: #cccccc; line-height: 1.6; text-align: left; margin-bottom: 20px;">
-                🐾 <strong>Step 1:</strong> Select any of the 4 locations on the map grid to send Koon exploring.<br><br>
-                ☕ <strong>Step 2:</strong> Tap an action choice inside that area to search for hidden coffee collectibles.<br><br>
-                💎 <strong>Step 3:</strong> Build your mastery percentage! Collect Common (80%), Rare (18%), and Legendary (2%) item sets to load up your backpack!
+                🐾 <strong>Step 1:</strong> You get 1 free exploration roll every 24 hours.<br><br>
+                ☕ <strong>Step 2:</strong> Select any map area to search for hidden coffee collectibles.<br><br>
+                💎 <strong>Step 3:</strong> Uncover all 44 items to master your total backpack collection progress metrics!
             </p>
-            
             <button class="btn btn-green" onclick="closeRulesModal()">Got It!</button>
         </div>
     </div>
 
+    <!-- 🌐 COOLDOWN CHECK UTILITY SCRIPT -->
     <script>
-        // Initialize Telegram WebApp UI View Configurations
         const tg = window.Telegram.WebApp;
-        tg.expand(); // Maximizes canvas viewport scale height inside device screens
+        tg.expand();
 
-        // Popup rule control operators
-        type = function showRulesModal() {
-            document.getElementById("rulesModal").style.display = "flex";
+        // 📍 PASTE YOUR SECURE NGROK FORWARDING LINK HERE:
+        const BACKEND_API = "https://ngrok-free.app";
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const user = tg.initDataUnsafe.user || { id: 9999 };
+
+            // Request active cooldown timing from your PC
+            fetch(`${BACKEND_API}/api/check_cooldown`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ user_id: user.id })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (!data.can_roll) {
+                    lockMapNodes(data.time_left_seconds);
+                }
+            })
+            .catch(err => console.log("Engine offline or server bootstrapping."));
+        });
+
+        function lockMapNodes(secondsLeft) {
+            // Grey out and disable location action nodes
+            const nodes = document.querySelectorAll(".map-node");
+            nodes.forEach(btn => {
+                btn.disabled = true;
+                btn.style.filter = "grayscale(1) brightness(0.4)";
+                btn.style.opacity = "0.6";
+                btn.style.cursor = "not-allowed";
+                btn.onclick = null;
+            });
+
+            // Start live countdown visual loop directly inside the main title header card
+            let timer = secondsLeft;
+            const header = document.getElementById("hubHeader");
+
+            const interval = setInterval(() => {
+                if (timer <= 0) {
+                    clearInterval(interval);
+                    header.innerText = "Koon Sets Out To Explore";
+                    nodes.forEach(btn => {
+                        btn.disabled = false;
+                        btn.style.filter = "none";
+                        btn.style.opacity = "1";
+                        btn.style.cursor = "pointer";
+                    });
+                    window.location.reload();
+                } else {
+                    const hours = Math.floor(timer / 3600);
+                    const minutes = Math.floor((timer % 3600) / 60);
+                    const secs = timer % 60;
+                    
+                    // Pad digits with starting zeros
+                    const dispHours = hours < 10 ? "0" + hours : hours;
+                    const dispMins = minutes < 10 ? "0" + minutes : minutes;
+                    const dispSecs = secs < 10 ? "0" + secs : secs;
+
+                    header.innerText = `Next Roll In: ${dispHours}:${dispMins}:${dispSecs}`;
+                    header.style.color = "#ff4d4d"; // Change header text red to visually match the timer lockout
+                    timer--;
+                }
+            }, 1000);
         }
-        function closeRulesModal() {
-            document.getElementById("rulesModal").style.display = "none";
-        }
+
+        function showRulesModal() { document.getElementById("rulesModal").style.display = "flex"; }
+        function closeRulesModal() { document.getElementById("rulesModal").style.display = "none"; }
     </script>
 </body>
 </html>
