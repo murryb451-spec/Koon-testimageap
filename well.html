@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Where Will Koon Look?</title>
-    <!-- Use version cache-busting v=4 to instantly clear the styling cache wall -->
-    <link rel="stylesheet" href="style.css?v=4">
-    <script src="https://telegram.org"></script>
+    <!-- Bump the v= number whenever you change style.css so phones load the new version -->
+    <link rel="stylesheet" href="style.css?v=5">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body>
     <div class="app-container">
@@ -24,27 +24,27 @@
         <!-- 2-Column Choice Action Grid Layout -->
         <div class="grid-container binary-grid">
             <div class="choice-block">
-                <button class="btn btn-purple" onclick="rollLoot('Abandoned Well')">In The Well</button>
+                <button class="btn btn-purple roll-btn" onclick="rollLoot('Abandoned Well')">In The Well</button>
                 <p class="choice-subtext">Looks Wet, But Feels Lucky.</p>
             </div>
             <div class="choice-block">
-                <button class="btn btn-purple" onclick="rollLoot('Abandoned Well')">In The Bucket</button>
+                <button class="btn btn-purple roll-btn" onclick="rollLoot('Abandoned Well')">In The Bucket</button>
                 <p class="choice-subtext">Seems Like A Good Place To Start</p>
             </div>
         </div>
     </div>
 
     <!-- 🐾 DYNAMIC COFFEE LOOT POPUP MODAL CONTAINER -->
-    <div id="lootModal" class="modal-overlay">
-        <div class="modal-content">
+    <div id="lootModal" class="modal-overlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; box-sizing: border-box; background-color: rgba(0, 0, 0, 0.85); display: none; justify-content: center; align-items: center; z-index: 1000; padding: 20px;">
+        <div class="modal-content" style="width: 100%; max-width: 360px; box-sizing: border-box; max-height: 100%; overflow-y: auto;">
             <div id="dupBadge" class="duplicate-badge" style="display:none;">Owned Duplicate</div>
             <h2 id="itemName" class="item-title">Item Name</h2>
             <div id="itemRarity" class="item-rarity">Rarity</div>
-            
+
             <div class="item-frame">
                 <img id="itemImg" src="" alt="Loot Artwork" class="item-artwork">
             </div>
-            
+
             <p id="itemDescription" class="item-desc">Item Description</p>
 
             <!-- 📊 Live Set Metrics Progression Display Grid -->
@@ -68,28 +68,52 @@
 
     <!-- 🌐 ASYNCHRONOUS ENGINE SCRIPTS -->
     <script>
-        const tg = window.Telegram.WebApp;
-        tg.expand();
-        
-        // 📍 YOUR PERMANENT DEVELOPER DOMAIN LINK:
-        const BACKEND_API = "https://murryb451-spec.github.io/Koon-testimageap/";
+        // Works inside Telegram; falls back safely when opened in a normal browser for testing
+        const tg = (window.Telegram && window.Telegram.WebApp) ? window.Telegram.WebApp : null;
+        if (tg) {
+            tg.ready();
+            tg.expand();
+        }
+
+        // 📍 PASTE YOUR SECURE NGROK FORWARDING LINK HERE (same as index.html, no slash at the end):
+        const BACKEND_API = "https://nugget-impromptu-carefully.ngrok-free.dev";
+
+        let rolling = false;
+
+        function setButtonsDisabled(disabled) {
+            document.querySelectorAll(".roll-btn").forEach(btn => {
+                btn.disabled = disabled;
+                btn.style.opacity = disabled ? "0.6" : "1";
+            });
+        }
 
         function rollLoot(zoneName) {
-            const user = tg.initDataUnsafe.user || { id: 9999, first_name: "LocalPlayer" };
-            
+            if (rolling) return; // Stop double-taps from sending two rolls
+            rolling = true;
+            setButtonsDisabled(true);
+
+            const user = (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) || { id: 9999, first_name: "LocalPlayer" };
+
             // Asynchronously fetch item data from your local PC engine endpoint
             fetch(`${BACKEND_API}/api/roll`, {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
+                headers: {
+                    "Content-Type": "application/json",
+                    // Skips ngrok's free-plan warning page, which would otherwise break the JSON response
+                    "ngrok-skip-browser-warning": "true"
+                },
                 body: JSON.stringify({
                     user_id: user.id,
-                    username: user.first_name,
+                    username: user.first_name || user.username || "Explorer",
                     location: zoneName
                 })
             })
             .then(res => {
+                if (res.status === 403) {
+                    throw new Error("cooldown");
+                }
                 if (!res.ok) {
-                    throw new Error("Daily Cooldown Active or Network Mismatch");
+                    throw new Error("server");
                 }
                 return res.json();
             })
@@ -100,28 +124,35 @@
                 document.getElementById("itemRarity").className = `item-rarity ${data.rarity}`;
                 document.getElementById("itemImg").src = data.artwork_image_path;
                 document.getElementById("itemDescription").innerText = data.short_description;
-                
+
                 // Track duplicate banner visibility
                 document.getElementById("dupBadge").style.display = data.is_duplicate ? "inline-block" : "none";
-                
+
                 // 📊 Update live percentage metrics
                 document.getElementById("setNameDisplay").innerText = data.set_name;
                 document.getElementById("setPct").innerText = `${data.set_completion_pct}%`;
                 document.getElementById("setRatio").innerText = `${data.set_owned_count} / ${data.set_total_count}`;
                 document.getElementById("totalPct").innerText = `${data.total_backpack_pct}%`;
-                
-                // Show the modal screen overlay block smoothly
+
+                // Show the modal screen overlay block
                 document.getElementById("lootModal").style.display = "flex";
             })
             .catch(err => {
-                alert("Cannot roll loot! Make sure bot.py is running, your ngrok tunnel is online, and your 24-hour daily countdown is not active.");
+                if (err.message === "cooldown") {
+                    alert("Koon is resting! Your 24-hour daily roll has already been used. Check the map for the countdown.");
+                    window.location.href = "index.html";
+                } else {
+                    alert("Cannot roll loot! Make sure koon_bot.py is running and your ngrok tunnel is online.");
+                    rolling = false;
+                    setButtonsDisabled(false);
+                }
             });
         }
 
         function closeModal() {
             document.getElementById("lootModal").style.display = "none";
             // Return back to map menu home to update the daily countdown clock trigger instantly
-            window.location.href = 'index.html';
+            window.location.href = "index.html";
         }
     </script>
 </body>
