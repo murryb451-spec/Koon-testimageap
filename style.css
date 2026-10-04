@@ -17,7 +17,7 @@ body {
     align-items: flex-start;
     min-height: 100vh;
     overflow-x: hidden;
-    
+
     /* 🐾 ROOT-RELATIVE PAW PATTERN DIRECTORY FALLBACK MAP ENGINE */
     background-image: url("./paw.png");
     background-size: 180px 180px; /* Scaled-up layout density per calibration tracking */
@@ -34,7 +34,7 @@ body {
     align-items: center;
     min-height: 100vh;
     /* Soft shading veil protecting text components over background vectors */
-    background-color: rgba(0, 0, 0, 0.4); 
+    background-color: rgba(0, 0, 0, 0.4);
 }
 
 /* ==========================================================================
@@ -43,7 +43,7 @@ body {
 
 /* Main Game Header Typography System (Classic Gold/Yellow Palette) */
 .main-title {
-    color: #E2CD5A; 
+    color: #E2CD5A;
     font-size: 24px;
     font-weight: 800;
     text-align: center;
@@ -115,6 +115,14 @@ body {
 .btn:active {
     transform: scale(0.96);
     filter: brightness(0.9);
+}
+
+/* Disabled buttons (cooldown lock / roll in progress) don't animate on tap */
+.btn:disabled {
+    cursor: not-allowed;
+}
+.btn:disabled:active {
+    transform: none;
 }
 
 /* Green Gradient Capsule Controllers (How to Play / Action Endpoints) */
@@ -194,6 +202,8 @@ body {
     border-radius: 16px;
     width: 100%;
     max-width: 360px;
+    max-height: 100%; /* Scrolls instead of spilling off short phone screens */
+    overflow-y: auto;
     padding: 24px;
     text-align: center;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.8);
@@ -280,7 +290,9 @@ body {
 
 .backpack-layout {
     background-color: transparent !important; /* Shuts off veil layers to render leather directly */
-    height: 100vh;
+    /* Telegram provides the real visible height; 100vh is the fallback for normal browsers */
+    height: var(--tg-viewport-stable-height, 100vh);
+    min-height: 0;
     overflow: hidden;
 }
 
@@ -307,7 +319,9 @@ body {
 .shelf-scroll-area {
     width: 100%;
     flex: 1;
+    min-height: 0; /* Lets the shelf shrink so it can actually scroll inside the fixed-height layout */
     overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
     padding-right: 4px;
     margin-bottom: 10px;
 }
@@ -381,15 +395,15 @@ body {
     transform: scale(0.92);
 }
 
-/* Custom States for Collected Items vs Locked Silhouettes */
+/* Custom States for Collected Items vs Locked ??? Slots */
 .slot-unlocked {
     border-color: rgba(226, 205, 90, 0.5);
     box-shadow: inset 0 0 8px rgba(226, 205, 90, 0.15);
 }
 
 .slot-locked {
-    filter: grayscale(1) brightness(0.35); /* Enforces dark silhouette masking on unowned items */
-    opacity: 0.5;
+    opacity: 0.75; /* Dimmed, but light enough that the ??? stays readable */
+    font-size: 16px;
 }
 
 .slot-thumbnail {
@@ -399,10 +413,10 @@ body {
 }
 
 .loading-text, .error-text {
-text-align: center;
-font-size: 14px;
-font-weight: bold;
-padding: 4px;
-margin-top: 40px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 4px;
+    margin-top: 40px;
 }
 .error-text { color: #e63946; }
