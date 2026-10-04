@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Koon's Backpack Inventory</title>
-    <!-- Configured to match your cache-busting v=3 stylesheet -->
-    <link rel="stylesheet" href="style.css?v=3">
+    <!-- Configured to match your cache-busting v=4 stylesheet link -->
+    <link rel="stylesheet" href="style.css?v=4">
     <script src="https://telegram.org"></script>
 </head>
 <body class="backpack-body">
@@ -45,7 +45,7 @@
         tg.expand();
 
         // 📍 PASTE YOUR EXACT SAME LIVE NGROK FORWARDING LINK HERE:
-        const BACKEND_API = "https://nugget-impromptu-carefully.ngrok-free.dev";
+        const BACKEND_API = "https://ngrok-free.dev";
 
         document.addEventListener("DOMContentLoaded", () => {
             const user = tg.initDataUnsafe.user || { id: 9999 };
@@ -67,24 +67,28 @@
                     const setWrapper = document.createElement("div");
                     setWrapper.className = "set-group-card";
 
+                    // Generate list slots securely bypassing single-quote string break pitfalls
+                    let itemsHtml = "";
+                    set.items.forEach(item => {
+                        const cleanName = item.name.replace(/'/g, "\\'");
+                        const cleanDesc = item.short_description.replace(/'/g, "\\'");
+                        const slotClass = item.owned ? 'slot-unlocked' : 'slot-locked';
+
+                        itemsHtml += `
+                            <div class="inventory-slot ${slotClass}" 
+                                 onclick="inspectItem('${cleanName}', '${cleanDesc}', '${item.artwork_image_path}', '${set.rarity}')">
+                                <img src="${item.artwork_image_path}" alt="${item.name}" class="slot-thumbnail">
+                            </div>
+                        `;
+                    });
+
                     setWrapper.innerHTML = `
                         <div class="set-meta-header">
                             <span class="set-title-label">${set.set_name}</span>
                             <span class="set-ratio-counter ${set.rarity}">${set.owned_count}/${set.total_count}</span>
                         </div>
                         <div class="item-grid-row">
-                            ${set.items.map(item => {
-                                // Escape single quotes safely to protect descriptive string mapping parameters
-                                const cleanDesc = item.short_description.replace(/'/g, "\\'");
-                                const cleanName = item.name.replace(/'/g, "\\'");
-                                
-                                return `
-                                    <div class="inventory-slot \${item.owned ? 'slot-unlocked' : 'slot-locked'}" 
-                                         onclick="inspectItem('cleanName', '{cleanDesc}', '\({item.artwork_image_path}', '\){set.rarity}')">
-                                        <img src="\({item.artwork_image_path}" alt="\){item.name}" class="slot-thumbnail">
-                                    </div>
-                                `;
-                            }).join('')}
+                            ${itemsHtml}
                         </div>
                     `;
                     container.appendChild(setWrapper);
