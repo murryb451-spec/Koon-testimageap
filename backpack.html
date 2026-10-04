@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Koon's Backpack Inventory</title>
-    <!-- Configured to match your cache-busting v=5 stylesheet link -->
+    <!-- Bump the v= number whenever you change style.css so phones load the new version -->
     <link rel="stylesheet" href="style.css?v=5">
-    <script src="https://telegram.org"></script>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body class="backpack-body">
     <div class="app-container backpack-layout">
-        
+
         <!-- Navigation Hub Bars -->
         <div class="backpack-header">
             <button class="back-link" onclick="window.location.href='index.html'">← Back Map</button>
@@ -24,81 +24,26 @@
     </div>
 
     <!-- 🔍 INTERACTIVE ITEM DETAILS MODAL DRAWER LAYER -->
-    <div id="itemDetailsModal" class="modal-overlay">
-        <div class="modal-content">
+    <div id="itemDetailsModal" class="modal-overlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; box-sizing: border-box; background-color: rgba(0, 0, 0, 0.85); display: none; justify-content: center; align-items: center; z-index: 1000; padding: 20px;">
+        <div class="modal-content" style="width: 100%; max-width: 360px; box-sizing: border-box; max-height: 100%; overflow-y: auto;">
             <h2 id="inspectName" class="item-title">Item Name</h2>
             <div id="inspectRarity" class="item-rarity">RARITY</div>
-            
+
             <div class="item-frame">
                 <img id="inspectImg" src="" alt="Item Card Thumbnail" class="item-artwork">
             </div>
-            
+
             <p id="inspectDescription" class="item-desc">Item Description</p>
-            
+
             <button class="btn btn-green" onclick="closeInspectModal()">Close Details</button>
         </div>
     </div>
 
     <!-- 🌐 ASYNCHRONOUS PACK PARSER ENGINE -->
     <script>
-        const tg = window.Telegram.WebApp;
-        tg.expand();
-
-        // 📍 YOUR PERMANENT DEVELOPER DOMAIN LINK:
-        const BACKEND_API = "https://murryb451-spec.github.io/Koon-testimageap/";
-
-        document.addEventListener("DOMContentLoaded", () => {
-            const user = tg.initDataUnsafe.user || { id: 9999 };
-
-            // Request full inventory index tracking arrays from your local PC database
-            fetch(`${BACKEND_API}/api/backpack`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ user_id: user.id })
-            })
-            .then(res => res.json())
-            .then(data => {
-                document.getElementById("masteryPct").innerText = `${data.overall_progress_pct}%`;
-                const container = document.getElementById("shelfContainer");
-                container.innerHTML = ""; // Clear active loading string text
-
-                // Map your nested coffee collection arrays into the visual layout shelf
-                data.sets.forEach(set => {
-                    const setWrapper = document.createElement("div");
-                    setWrapper.className = "set-group-card";
-
-                    // Generate list slots securely bypassing string break pitfalls
-                    let itemsHtml = "";
-                    set.items.forEach(item => {
-                        const cleanName = item.name.replace(/'/g, "\\'");
-                        const cleanDesc = item.short_description.replace(/'/g, "\\'");
-                        const slotClass = item.owned ? 'slot-unlocked' : 'slot-locked';
-
-                        itemsHtml += `
-                            <div class="inventory-slot ${slotClass}" 
-                                 onclick="inspectItem('${cleanName}', '${cleanDesc}', '${item.artwork_image_path}', '${set.rarity}')">
-                                <img src="${item.artwork_image_path}" alt="${item.name}" class="slot-thumbnail">
-                            </div>
-                        `;
-                    });
-
-                    setWrapper.innerHTML = `
-                        <div class="set-meta-header">
-                            <span class="set-title-label">${set.set_name}</span>
-                            <span class="set-ratio-counter ${set.rarity}">${set.owned_count}/${set.total_count}</span>
-                        </div>
-                        <div class="item-grid-row">
-                            ${itemsHtml}
-                        </div>
-                    `;
-                    container.appendChild(setWrapper);
-                });
-            })
-            .catch(err => {
-                document.getElementById("shelfContainer").innerHTML = 
-                    `<div class="error-text">PC Server Offline! Run bot.py and check your active Ngrok pipeline links.</div>`;
-            });
-        });
+        function closeInspectModal() {
+            document.getElementById("itemDetailsModal").style.display = "none";
+        }
 
         // Interactive asset inspector function
         function inspectItem(name, desc, imgPath, rarity) {
@@ -107,14 +52,113 @@
             document.getElementById("inspectRarity").className = `item-rarity ${rarity}`;
             document.getElementById("inspectImg").src = imgPath;
             document.getElementById("inspectDescription").innerText = desc;
-            
-            // Pop open details layout grid card overlay modal block smoothly
+
+            // Pop open details layout grid card overlay modal block
             document.getElementById("itemDetailsModal").style.display = "flex";
         }
 
-        function closeInspectModal() {
-            document.getElementById("itemDetailsModal").style.display = "none";
+        // Works inside Telegram; falls back safely when opened in a normal browser for testing
+        const tg = (window.Telegram && window.Telegram.WebApp) ? window.Telegram.WebApp : null;
+        if (tg) {
+            tg.ready();
+            tg.expand();
         }
+
+        // 📍 PASTE YOUR SECURE NGROK FORWARDING LINK HERE (same as index.html, no slash at the end):
+        const BACKEND_API = "https://nugget-impromptu-carefully.ngrok-free.dev";
+
+        function showError(message) {
+            const container = document.getElementById("shelfContainer");
+            container.innerHTML = "";
+            const errorBox = document.createElement("div");
+            errorBox.className = "error-text";
+            errorBox.innerText = message;
+            container.appendChild(errorBox);
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const user = (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) || { id: 9999 };
+
+            // Request full inventory index tracking arrays from your local PC database
+            fetch(`${BACKEND_API}/api/backpack`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    // Skips ngrok's free-plan warning page, which would otherwise break the JSON response
+                    "ngrok-skip-browser-warning": "true"
+                },
+                body: JSON.stringify({ user_id: user.id })
+            })
+            .then(res => {
+                if (!res.ok) throw new Error("Server responded " + res.status);
+                return res.json();
+            })
+            .then(data => {
+                document.getElementById("masteryPct").innerText = `${data.overall_progress_pct || 0}%`;
+                const container = document.getElementById("shelfContainer");
+                container.innerHTML = ""; // Clear active loading string text
+
+                const sets = Array.isArray(data.sets) ? data.sets : [];
+                if (sets.length === 0) {
+                    showError("Your backpack is empty. Go explore the map!");
+                    return;
+                }
+
+                // Build each set card with real elements, so quotes or symbols in
+                // item names and descriptions can never break the page
+                sets.forEach(set => {
+                    const setWrapper = document.createElement("div");
+                    setWrapper.className = "set-group-card";
+
+                    const header = document.createElement("div");
+                    header.className = "set-meta-header";
+
+                    const title = document.createElement("span");
+                    title.className = "set-title-label";
+                    title.innerText = set.set_name;
+
+                    const ratio = document.createElement("span");
+                    ratio.className = `set-ratio-counter ${set.rarity}`;
+                    ratio.innerText = `${set.owned_count}/${set.total_count}`;
+
+                    header.appendChild(title);
+                    header.appendChild(ratio);
+
+                    const row = document.createElement("div");
+                    row.className = "item-grid-row";
+
+                    set.items.forEach(item => {
+                        const slot = document.createElement("div");
+                        slot.className = `inventory-slot ${item.owned ? "slot-unlocked" : "slot-locked"}`;
+
+                        const thumb = document.createElement("img");
+                        thumb.src = item.artwork_image_path;
+                        thumb.alt = item.name;
+                        thumb.className = "slot-thumbnail";
+                        slot.appendChild(thumb);
+
+                        slot.addEventListener("click", () => {
+                            inspectItem(
+                                item.name,
+                                item.short_description,
+                                item.artwork_image_path,
+                                item.rarity || set.rarity
+                            );
+                        });
+
+                        row.appendChild(slot);
+                    });
+
+                    setWrapper.appendChild(header);
+                    setWrapper.appendChild(row);
+                    container.appendChild(setWrapper);
+                });
+            })
+            .catch(err => {
+                console.log("Backpack load failed:", err);
+                showError("PC Server Offline! Run koon_bot.py and check that your ngrok tunnel is online.");
+            });
+        });
     </script>
 </body>
 </html>
