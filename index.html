@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Koon Sets Out To Explore</title>
-    <!-- Kept at version cache-busting v=3 -->
+    <!-- Bump the v= number whenever you change style.css so phones load the new version -->
     <link rel="stylesheet" href="style.css?v=5">
-    <script src="https://telegram.org"></script>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body>
     <div class="app-container">
@@ -38,8 +38,8 @@
     </div>
 
     <!-- Rules Modal Layer -->
-    <div id="rulesModal" class="modal-overlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.85); display: none; justify-content: center; align-items: center; z-index: 1000; padding: 20px;">
-        <div class="modal-content" style="background: #111111; border: 2px solid #E2CD5A; border-radius: 16px; width: 100%; max-width: 360px; padding: 24px; text-align: center;">
+    <div id="rulesModal" class="modal-overlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; box-sizing: border-box; background-color: rgba(0, 0, 0, 0.85); display: none; justify-content: center; align-items: center; z-index: 1000; padding: 20px;">
+        <div class="modal-content" style="background: #111111; border: 2px solid #E2CD5A; border-radius: 16px; width: 100%; max-width: 360px; box-sizing: border-box; padding: 24px; text-align: center;">
             <h2 class="item-title" style="font-size: 22px; font-weight: 800; color: #E2CD5A; margin-bottom: 12px;">How To Play ?</h2>
             <p class="item-desc" style="font-size: 14px; color: #cccccc; line-height: 1.6; text-align: left; margin-bottom: 20px;">
                 🐾 <strong>Step 1:</strong> You get 1 free exploration roll every 24 hours.<br><br>
@@ -52,28 +52,43 @@
 
     <!-- 🌐 COOLDOWN CHECK UTILITY SCRIPT -->
     <script>
-        const tg = window.Telegram.WebApp;
-        tg.expand();
+        function showRulesModal() { document.getElementById("rulesModal").style.display = "flex"; }
+        function closeRulesModal() { document.getElementById("rulesModal").style.display = "none"; }
 
-        // 📍 PASTE YOUR SECURE NGROK FORWARDING LINK HERE:
+        // Works inside Telegram; falls back safely when opened in a normal browser for testing
+        const tg = (window.Telegram && window.Telegram.WebApp) ? window.Telegram.WebApp : null;
+        if (tg) {
+            tg.ready();
+            tg.expand();
+        }
+
+        // 📍 PASTE YOUR SECURE NGROK FORWARDING LINK HERE (no slash at the end):
         const BACKEND_API = "https://nugget-impromptu-carefully.ngrok-free.dev";
 
         document.addEventListener("DOMContentLoaded", () => {
-            const user = tg.initDataUnsafe.user || { id: 9999 };
+            const user = (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) || { id: 9999 };
 
             // Request active cooldown timing from your PC
             fetch(`${BACKEND_API}/api/check_cooldown`, {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
+                headers: {
+                    "Content-Type": "application/json",
+                    // Skips ngrok's free-plan warning page, which would otherwise break the JSON response
+                    "ngrok-skip-browser-warning": "true"
+                },
                 body: JSON.stringify({ user_id: user.id })
             })
-            .then(res => res.json())
+            .then(res => {
+                if (!res.ok) throw new Error("Server responded " + res.status);
+                return res.json();
+            })
             .then(data => {
-                if (!data.can_roll) {
-                    lockMapNodes(data.time_left_seconds);
+                const secondsLeft = Number(data.time_left_seconds);
+                if (data.can_roll === false && secondsLeft > 0) {
+                    lockMapNodes(Math.floor(secondsLeft));
                 }
             })
-            .catch(err => console.log("Engine offline or server bootstrapping."));
+            .catch(err => console.log("Engine offline or server bootstrapping.", err));
         });
 
         function lockMapNodes(secondsLeft) {
@@ -84,43 +99,31 @@
                 btn.style.filter = "grayscale(1) brightness(0.4)";
                 btn.style.opacity = "0.6";
                 btn.style.cursor = "not-allowed";
-                btn.onclick = null;
             });
 
             // Start live countdown visual loop directly inside the main title header card
             let timer = secondsLeft;
             const header = document.getElementById("hubHeader");
+            header.style.color = "#ff4d4d"; // Red header to visually match the timer lockout
 
-            const interval = setInterval(() => {
+            const pad = n => (n < 10 ? "0" + n : String(n));
+
+            const tick = () => {
                 if (timer <= 0) {
                     clearInterval(interval);
-                    header.innerText = "Koon Sets Out To Explore";
-                    nodes.forEach(btn => {
-                        btn.disabled = false;
-                        btn.style.filter = "none";
-                        btn.style.opacity = "1";
-                        btn.style.cursor = "pointer";
-                    });
-                    window.location.reload();
-                } else {
-                    const hours = Math.floor(timer / 3600);
-                    const minutes = Math.floor((timer % 3600) / 60);
-                    const secs = timer % 60;
-                    
-                    // Pad digits with starting zeros
-                    const dispHours = hours < 10 ? "0" + hours : hours;
-                    const dispMins = minutes < 10 ? "0" + minutes : minutes;
-                    const dispSecs = secs < 10 ? "0" + secs : secs;
-
-                    header.innerText = `Next Roll In: ${dispHours}:${dispMins}:${dispSecs}`;
-                    header.style.color = "#ff4d4d"; // Change header text red to visually match the timer lockout
-                    timer--;
+                    window.location.reload(); // Re-checks the server and unlocks the map
+                    return;
                 }
-            }, 1000);
-        }
+                const hours = Math.floor(timer / 3600);
+                const minutes = Math.floor((timer % 3600) / 60);
+                const secs = timer % 60;
+                header.innerText = `Next Roll In: ${pad(hours)}:${pad(minutes)}:${pad(secs)}`;
+                timer--;
+            };
 
-        function showRulesModal() { document.getElementById("rulesModal").style.display = "flex"; }
-        function closeRulesModal() { document.getElementById("rulesModal").style.display = "none"; }
+            const interval = setInterval(tick, 1000);
+            tick(); // Show the timer immediately instead of after a 1-second delay
+        }
     </script>
 </body>
 </html>
